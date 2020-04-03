@@ -18,9 +18,26 @@ class Game
     loop do
       @guess = gets.chomp
       break if @guess.match(/[1-6][1-6][1-6][1-6]/) && @guess.length == 4
-      puts "Must only be 4 digits between 1-6.".red
+      puts "Your guess should only be 4 digits between 1-6.".red
     end
     self.reveal(@guess.split(//))
+    puts "Figure out the comparision logic:"
+    self.compare(@guess.split(//))
+  end
+
+  def compare (guess)
+    guess.each do |num|
+      print " ? ".reverse_color if @master_code.numbers.include?(num)
+      print " " if @master_code.numbers.include?(num)
+    end
+    puts ""
+    # puts "Game Clues:"
+    # print " * ".bg_black.gray
+    # print " Correct Color & Correct Spot"
+    # puts ""
+    # print " ? ".reverse_color
+    # print " Correct Color"
+    # puts ""
   end
 
   def reveal (array)
