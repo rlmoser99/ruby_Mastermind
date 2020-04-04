@@ -16,15 +16,17 @@ class Game
   end 
   
   def turn
-    puts "Type in four numbers (1-6) to guess code"
     loop do
-      @guess = gets.chomp
-      break if @guess.match(/[1-6][1-6][1-6][1-6]/) && @guess.length == 4
-      puts "Your guess should only be 4 digits between 1-6.".red
+      puts "Type in four numbers (1-6) to guess code"
+      loop do
+        @guess = gets.chomp
+        break if @guess.match(/[1-6][1-6][1-6][1-6]/) && @guess.length == 4
+        puts "Your guess should only be 4 digits between 1-6.".red
+      end
+      self.reveal(@guess.split(//))
+      break if solved?(@master_code.numbers, @guess.split(//))
+      self.compare(@guess.split(//))
     end
-    self.reveal(@guess.split(//))
-    # puts "Figure out the comparision logic:"
-    self.compare(@guess.split(//))
   end
 
   def compare (guess)
@@ -34,22 +36,21 @@ class Game
     index = 0
     4.times do
       if temp_master[index] == guess[index]
-        # print " * ".bg_black.gray
         print " * ".bg_gray.green
         print " "
-        temp_master[index] = "X"
-        guess[index]  = "X"
+        temp_master[index] = "*"
+        guess[index]  = "*"
       end
       index += 1
     end
     i = 0
     4.times do
-      if guess[i] != "X" && temp_master.include?(guess[i])
+      if guess[i] != "*" && temp_master.include?(guess[i])
         print " ? ".bg_gray.red
         print " "
         delete = temp_master.find_index(guess[i])
-        temp_master[delete] = "X"
-        guess[i]  = "X"
+        temp_master[delete] = "?"
+        guess[i]  = "?"
       end
       i += 1
     end
@@ -59,18 +60,25 @@ class Game
     # puts "#{@master_code.numbers} should be unchanged"
   end
 
+  def solved? (master, guess)
+    game_over = false
+    if master[0] == guess[0] && master[1] == guess[1] && master[2] == guess[2] && master[3] == guess[3]
+      puts "  Correct Solution! Game over!!!"
+      game_over = true
+    end
+    game_over
+  end
+
   def reveal (array)
     array.each do | num |
       print "  #{num}  ".bg_blue if num == "1"
       print "  #{num}  ".bg_green if num == "2"
       print "  #{num}  ".bg_magenta if num == "3"
-      # print "  #{num}  ".bg_gray.black.bold if num == "4"
       print "  #{num}  ".bg_cyan.black.bold if num == "4"
       print "  #{num}  ".bg_brown.black.bold if num == "5"
       print "  #{num}  ".bg_red.black.bold if num == "6"
       print " "
     end
-    # puts ""
   end
 
   def play
@@ -82,41 +90,3 @@ class Game
 end
 
 # method: instructions
-# method: get user code guesses
-# method: process code guess
-# method: show code & clues
-
-# CODE:  3234
-# guess: 2335
-# Check for index values that match
-# CODE:  32X4
-# guess: 23X5
-# Check for same number
-# 2
-# CODE:  3XX4
-# guess: X3X5
-# 3
-# CODE:  XXX4
-# guess: XXX5
-# 5
-# CODE:  XXX4
-# guess: XXXX
-
-# CODE:  1422
-# guess: 2344
-# Check for index values that match
-# CODE:  1422
-# guess: 2344
-# Check for same number
-# 2
-# CODE:  14X2
-# guess: X344
-# 3
-# CODE:  14X2
-# guess: XX44
-# 4
-# CODE:  1XX2
-# guess: XXX4
-# 4
-# CODE:  1XX2
-# guess: XXXX
