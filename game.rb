@@ -1,11 +1,30 @@
 class Game
 
   def start
-    puts "Let's play Mastermind"
+    puts ""
+    puts "Let's play MASTERMIND"
     @master_code = Code.new
     @options = ["1", "2", "3", "4", "5", "6"]
-    puts "The computer will choose 4 random color/numbers to make a code"
+    puts "This game is played with the following number/color combinations:"
     self.reveal(@options)
+    puts ""
+    puts ""
+    puts "The computer will randomly choose 4 to create a code for you to break. For example,"
+    self.reveal(["5", "6", "2", "4"])
+    puts ""
+    puts ""
+    puts "There can be more then one of the same number/color. For example,".red
+    self.reveal(["2", "1", "3", "2"])
+    puts ""
+    puts ""
+    puts "The computer may give you a clue to help you solve for each ONE EACH!!!"
+    print " * ".bg_gray.green
+    print " "
+    puts "This clue means you have 1 correct number in the correct spot."
+    puts ""
+    print " ? ".bg_gray.red
+    print " "
+    puts "This clue means you have 1 correct number, but it is in the wrong spot."
     puts ""
   end
 
@@ -16,8 +35,11 @@ class Game
   end 
   
   def turn
-    loop do
-      puts "Type in four numbers (1-6) to guess code"
+    turn = 1
+    12.times do
+      puts "Turn ##{turn}: Type in four numbers (1-6) to guess code"
+      puts "Think carefully. This is your last turn to win!".red if turn == 12
+      turn += 1
       loop do
         @guess = gets.chomp
         break if @guess.match(/[1-6][1-6][1-6][1-6]/) && @guess.length == 4
@@ -26,6 +48,14 @@ class Game
       self.reveal(@guess.split(//))
       break if solved?(@master_code.numbers, @guess.split(//))
       self.compare(@guess.split(//))
+    end
+    if solved?(@master_code.numbers, @guess.split(//))
+      puts "  You broke the code! Congratulations, you win!"
+    else
+      puts "Game over. You ran out of turns. ¯\\_(ツ)_/¯ ".red
+      puts "Here is the code that you were trying to break:"
+      self.reveal(@master_code.numbers)
+      puts ""
     end
   end
 
@@ -63,7 +93,6 @@ class Game
   def solved? (master, guess)
     game_over = false
     if master[0] == guess[0] && master[1] == guess[1] && master[2] == guess[2] && master[3] == guess[3]
-      puts "  Correct Solution! Game over!!!"
       game_over = true
     end
     game_over
