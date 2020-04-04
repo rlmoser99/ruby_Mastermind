@@ -6,11 +6,13 @@ class Game
     @options = ["1", "2", "3", "4", "5", "6"]
     puts "The computer will choose 4 random color/numbers to make a code"
     self.reveal(@options)
+    puts ""
   end
 
   def show
     puts "TEMPORARILY REVEALED MASTER CODE:"
     self.reveal(@master_code.numbers)
+    puts ""
   end 
   
   def turn
@@ -21,17 +23,19 @@ class Game
       puts "Your guess should only be 4 digits between 1-6.".red
     end
     self.reveal(@guess.split(//))
-    puts "Figure out the comparision logic:"
+    # puts "Figure out the comparision logic:"
     self.compare(@guess.split(//))
   end
 
   def compare (guess)
     temp_master = []
     @master_code.numbers.each { |num| temp_master << num }
+    print "  Clues: "
     index = 0
     4.times do
       if temp_master[index] == guess[index]
-        print " * ".bg_black.gray
+        # print " * ".bg_black.gray
+        print " * ".bg_gray.green
         print " "
         temp_master[index] = "X"
         guess[index]  = "X"
@@ -41,7 +45,7 @@ class Game
     i = 0
     4.times do
       if guess[i] != "X" && temp_master.include?(guess[i])
-        print " ? ".reverse_color
+        print " ? ".bg_gray.red
         print " "
         delete = temp_master.find_index(guess[i])
         temp_master[delete] = "X"
@@ -57,15 +61,16 @@ class Game
 
   def reveal (array)
     array.each do | num |
-      print "  #{num}  ".bg_red.bold if num == 1 || num == "1"
-      print "  #{num}  ".bg_green.bold if num == 2 || num == "2"
-      print "  #{num}  ".bg_blue.bold if num == 3 || num == "3"
-      print "  #{num}  ".bg_magenta.bold if num == 4 || num == "4"
-      print "  #{num}  ".bg_cyan.bold if num == 5 || num == "5"
-      print "  #{num}  ".bg_gray.bold if num == 6 || num == "6"
+      print "  #{num}  ".bg_blue if num == "1"
+      print "  #{num}  ".bg_green if num == "2"
+      print "  #{num}  ".bg_magenta if num == "3"
+      # print "  #{num}  ".bg_gray.black.bold if num == "4"
+      print "  #{num}  ".bg_cyan.black.bold if num == "4"
+      print "  #{num}  ".bg_brown.black.bold if num == "5"
+      print "  #{num}  ".bg_red.black.bold if num == "6"
       print " "
     end
-    puts ""
+    # puts ""
   end
 
   def play
