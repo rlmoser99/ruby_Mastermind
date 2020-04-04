@@ -26,18 +26,33 @@ class Game
   end
 
   def compare (guess)
-    guess.each do |num|
-      print " ? ".reverse_color if @master_code.numbers.include?(num)
-      print " " if @master_code.numbers.include?(num)
+    temp_master = []
+    @master_code.numbers.each { |num| temp_master << num }
+    index = 0
+    4.times do
+      if temp_master[index] == guess[index]
+        print " * ".bg_black.gray
+        print " "
+        temp_master[index] = "X"
+        guess[index]  = "X"
+      end
+      index += 1
+    end
+    i = 0
+    4.times do
+      if guess[i] != "X" && temp_master.include?(guess[i])
+        print " ? ".reverse_color
+        print " "
+        delete = temp_master.find_index(guess[i])
+        temp_master[delete] = "X"
+        guess[i]  = "X"
+      end
+      i += 1
     end
     puts ""
-    # puts "Game Clues:"
-    # print " * ".bg_black.gray
-    # print " Correct Color & Correct Spot"
-    # puts ""
-    # print " ? ".reverse_color
-    # print " Correct Color"
-    # puts ""
+    # puts "#{guess} is the new guess"
+    # puts "#{temp_master} is the new temp master"
+    # puts "#{@master_code.numbers} should be unchanged"
   end
 
   def reveal (array)
@@ -65,3 +80,38 @@ end
 # method: get user code guesses
 # method: process code guess
 # method: show code & clues
+
+# CODE:  3234
+# guess: 2335
+# Check for index values that match
+# CODE:  32X4
+# guess: 23X5
+# Check for same number
+# 2
+# CODE:  3XX4
+# guess: X3X5
+# 3
+# CODE:  XXX4
+# guess: XXX5
+# 5
+# CODE:  XXX4
+# guess: XXXX
+
+# CODE:  1422
+# guess: 2344
+# Check for index values that match
+# CODE:  1422
+# guess: 2344
+# Check for same number
+# 2
+# CODE:  14X2
+# guess: X344
+# 3
+# CODE:  14X2
+# guess: XX44
+# 4
+# CODE:  1XX2
+# guess: XXX4
+# 4
+# CODE:  1XX2
+# guess: XXXX
