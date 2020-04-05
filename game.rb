@@ -2,10 +2,10 @@ class Game
 
   def start
     puts ""
-    puts "Let's play MASTERMIND"
+    puts "Let's play MASTERMIND!"
     @master_code = Code.new
     @options = ["1", "2", "3", "4", "5", "6"]
-    puts "This game is played with the following number/color combinations:"
+    puts "This game is played with the six number/color combinations:"
     self.reveal(@options)
     puts ""
     puts ""
@@ -63,31 +63,36 @@ class Game
     temp_master = []
     @master_code.numbers.each { |num| temp_master << num }
     print "  Clues: "
+    self.exact_matches(temp_master, guess)
+    self.right_numbers(temp_master, guess)
+    puts ""
+  end
+
+  def exact_matches(master, guess)
     index = 0
     4.times do
-      if temp_master[index] == guess[index]
+      if master[index] == guess[index]
         print " * ".bg_gray.green
         print " "
-        temp_master[index] = "*"
+        master[index] = "*"
         guess[index]  = "*"
       end
       index += 1
     end
+  end
+
+  def right_numbers(master, guess)
     i = 0
     4.times do
-      if guess[i] != "*" && temp_master.include?(guess[i])
+      if guess[i] != "*" && master.include?(guess[i])
         print " ? ".bg_gray.red
         print " "
-        delete = temp_master.find_index(guess[i])
-        temp_master[delete] = "?"
+        delete = master.find_index(guess[i])
+        master[delete] = "?"
         guess[i]  = "?"
       end
       i += 1
     end
-    puts ""
-    # puts "#{guess} is the new guess"
-    # puts "#{temp_master} is the new temp master"
-    # puts "#{@master_code.numbers} should be unchanged"
   end
 
   def solved? (master, guess)
@@ -112,10 +117,19 @@ class Game
 
   def play
     self.start
+    # Temporary reveal master code, to trouble-shoot clues
     self.show
     self.turn
   end
 
 end
 
-# method: instructions
+# Put code examples on same line?
+# Clarify one clue per number
+# Where to put instructions 
+# Prompt user if they want instructions
+# Prompt user if they want clue example
+# Put game.show for in CODE class
+# Put 12-turn logic in play method
+# Clean up code for solved?
+# Remove end game logic from turn
