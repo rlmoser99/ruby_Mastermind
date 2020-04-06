@@ -1,30 +1,58 @@
 class Game
 
   def start
-    puts ""
-    puts "Let's play MASTERMIND!"
     @master_code = Code.new
-    @options = ["1", "2", "3", "4", "5", "6"]
-    puts "This game is played with the six number/color combinations:"
-    self.reveal(@options)
+    puts ""
+    puts "Instructions:".underline
+    puts "Mastermind has six different number/color combinations:"
+    puts ""
+    self.reveal(["1", "2", "3", "4", "5", "6"])
     puts ""
     puts ""
-    puts "The computer will randomly choose 4 to create a code for you to break. For example,"
-    self.reveal(["5", "6", "2", "4"])
+    puts ""
+    puts "The computer will randomly choose four to create a 'master code' for you to break. For example,"
+    puts ""
+    self.reveal(["1", "3", "4", "1"])
     puts ""
     puts ""
-    puts "There can be more then one of the same number/color. For example,".red
-    self.reveal(["2", "1", "3", "2"])
     puts ""
+    puts "As you can see, there can be more then one of the same number/color.".red
+    puts "In order to win, you must guess the 'master code' in 12 or less turns."
     puts ""
-    puts "The computer may give you a clue to help you solve for each ONE EACH!!!"
+    puts "Clues:".underline
+    puts "After each guess, you will be given up to four clues to help you crack the code."
+    puts ""
     print " * ".bg_gray.green
     print " "
-    puts "This clue means you have 1 correct number in the correct spot."
+    puts "This clue means you have 1 correct number in the correct location."
     puts ""
     print " ? ".bg_gray.red
     print " "
-    puts "This clue means you have 1 correct number, but it is in the wrong spot."
+    puts "This clue means you have 1 correct number, but in the wrong location."
+    puts ""
+    puts ""
+    puts "Clue Example:".underline
+    puts ""
+    puts "To continue the example, using the above 'master code' a guess of"
+    puts ""
+    self.reveal(["1", "2", "3", "4"])
+    print " would produce 3 clues: "
+    print " * ".bg_gray.green
+    print " "
+    print " ? ".bg_gray.red
+    print " "
+    print " ? ".bg_gray.red
+    puts ""
+    puts ""
+    puts "The guess had 1 correct number in the correct location and 2 correct numbers in a wrong location."
+    puts ""
+    puts "Are you ready to PLAY???"
+    puts ""
+    puts ""
+    puts ""
+    puts ""
+    puts ""
+    puts ""
     puts ""
   end
 
