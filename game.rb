@@ -2,35 +2,23 @@ require './intro'
 
 class Game
   include Intro
-
-  def show
-    puts "TEMPORARILY REVEALED MASTER CODE:"
-    self.reveal(@master_code.numbers)
-    puts ""
-  end 
   
-  def turn
+  def player_turns
     turn = 1
-    12.times do
-      puts "Turn ##{turn}: Type in four numbers (1-6) to guess code"
-      puts "Think carefully. This is your last turn to win!".red if turn == 12
+    while turn <= 12 do
+      puts "Turn ##{turn}: Type in four numbers (1-6) to guess code, or 'q' to quit game"
+      puts "Choose carefully. This is your last turn to win!".red if turn == 12
       turn += 1
       loop do
         @guess = gets.chomp
         break if @guess.match(/[1-6][1-6][1-6][1-6]/) && @guess.length == 4
+        break if @guess.downcase == "q"
         puts "Your guess should only be 4 digits between 1-6.".red
       end
-      self.reveal(@guess.split(//))
+      break if @guess.downcase == "q"
+      self.display(@guess.split(//))
       break if solved?(@master_code.numbers, @guess.split(//))
       self.compare(@guess.split(//))
-    end
-    if solved?(@master_code.numbers, @guess.split(//))
-      puts "  You broke the code! Congratulations, you win!"
-    else
-      puts "Game over. You ran out of turns. ¯\\_(ツ)_/¯ ".red
-      puts "Here is the code that you were trying to break:"
-      self.reveal(@master_code.numbers)
-      puts ""
     end
   end
 
@@ -62,8 +50,8 @@ class Game
       if guess[i] != "*" && master.include?(guess[i])
         print " ? ".bg_gray.red
         print " "
-        delete = master.find_index(guess[i])
-        master[delete] = "?"
+        remove = master.find_index(guess[i])
+        master[remove] = "?"
         guess[i]  = "?"
       end
       i += 1
@@ -71,14 +59,25 @@ class Game
   end
 
   def solved? (master, guess)
-    game_over = false
-    if master[0] == guess[0] && master[1] == guess[1] && master[2] == guess[2] && master[3] == guess[3]
-      game_over = true
-    end
-    game_over
+    correct_guess = false
+    correct_guess = true if master == guess
   end
 
-  def reveal (array)
+  def end
+    if solved?(@master_code.numbers, @guess.split(//))
+      puts "  You broke the code! Congratulations, you win!"
+      puts ""
+    else
+      puts "Game over. ¯\\_(ツ)_/¯ ".red
+      puts ""
+      puts "Here is the 'master code' that you were trying to break:"
+      self.display(@master_code.numbers)
+      puts ""
+      puts ""
+    end
+  end
+
+  def display (array)
     array.each do | num |
       print "  #{num}  ".bg_blue if num == "1"
       print "  #{num}  ".bg_green if num == "2"
@@ -93,14 +92,11 @@ class Game
   def play
     self.instructions 
     @master_code = Code.new
-    # Temporary reveal master code, to trouble-shoot clues
-    self.show
-    self.turn
+    # puts "MASTER CODE (for trouble-shooting):"
+    # self.display(@master_code.numbers)
+    # puts ""
+    self.player_turns
+    self.end
   end
 
 end
-
-# Put game.show for in CODE class
-# Put 12-turn logic in play method
-# Clean up code for solved?
-# Remove end game logic from turn

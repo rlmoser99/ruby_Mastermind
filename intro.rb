@@ -5,13 +5,13 @@ module Intro
     puts "How to play Mastermind:".underline
     puts "There are six different number/color combinations:"
     puts ""
-    self.reveal(["1", "2", "3", "4", "5", "6"])
+    self.display(["1", "2", "3", "4", "5", "6"])
     puts ""
     puts ""
     puts ""
     puts "The computer will randomly choose four to create a 'master code' for you to break. For example,"
     puts ""
-    self.reveal(["1", "3", "4", "1"])
+    self.display(["1", "3", "4", "1"])
     puts ""
     puts ""
     puts ""
@@ -34,7 +34,7 @@ module Intro
     puts ""
     puts "To continue the example, using the above 'master code' a guess of"
     puts ""
-    self.reveal(["1", "2", "3", "4"])
+    self.display(["1", "2", "3", "4"])
     print " would produce 3 clues: "
     print " * ".bg_gray.green
     print " "
@@ -46,7 +46,8 @@ module Intro
     puts ""
     puts "The guess had 1 correct number in the correct location and 2 correct numbers in a wrong location."
     puts ""
-    puts "Now it's time to play. The 'master code' has been set and it's time for you to guess."
+    puts "It's time to play!".underline
+    puts "The 'master code' has been set and it's your turn to guess the code."
     puts ""
     puts ""
   end

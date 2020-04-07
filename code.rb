@@ -1,9 +1,5 @@
 class Code
   attr_accessor :numbers
-  # def initialize
-  #   num = Random.new
-  #   @numbers = [num.rand(1..6), num.rand(1..6), num.rand(1..6), num.rand(1..6)]
-  # end
 
   def initialize
     @numbers = []
