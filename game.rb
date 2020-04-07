@@ -1,60 +1,7 @@
-class Game
+require './intro'
 
-  def start
-    @master_code = Code.new
-    puts ""
-    puts "Instructions:".underline
-    puts "Mastermind has six different number/color combinations:"
-    puts ""
-    self.reveal(["1", "2", "3", "4", "5", "6"])
-    puts ""
-    puts ""
-    puts ""
-    puts "The computer will randomly choose four to create a 'master code' for you to break. For example,"
-    puts ""
-    self.reveal(["1", "3", "4", "1"])
-    puts ""
-    puts ""
-    puts ""
-    puts "As you can see, there can be more then one of the same number/color.".red
-    puts "In order to win, you must guess the 'master code' in 12 or less turns."
-    puts ""
-    puts "Clues:".underline
-    puts "After each guess, you will be given up to four clues to help you crack the code."
-    puts ""
-    print " * ".bg_gray.green
-    print " "
-    puts "This clue means you have 1 correct number in the correct location."
-    puts ""
-    print " ? ".bg_gray.red
-    print " "
-    puts "This clue means you have 1 correct number, but in the wrong location."
-    puts ""
-    puts ""
-    puts "Clue Example:".underline
-    puts ""
-    puts "To continue the example, using the above 'master code' a guess of"
-    puts ""
-    self.reveal(["1", "2", "3", "4"])
-    print " would produce 3 clues: "
-    print " * ".bg_gray.green
-    print " "
-    print " ? ".bg_gray.red
-    print " "
-    print " ? ".bg_gray.red
-    puts ""
-    puts ""
-    puts "The guess had 1 correct number in the correct location and 2 correct numbers in a wrong location."
-    puts ""
-    puts "Are you ready to PLAY???"
-    puts ""
-    puts ""
-    puts ""
-    puts ""
-    puts ""
-    puts ""
-    puts ""
-  end
+class Game
+  include Intro
 
   def show
     puts "TEMPORARILY REVEALED MASTER CODE:"
@@ -144,7 +91,8 @@ class Game
   end
 
   def play
-    self.start
+    self.instructions 
+    @master_code = Code.new
     # Temporary reveal master code, to trouble-shoot clues
     self.show
     self.turn
@@ -152,11 +100,6 @@ class Game
 
 end
 
-# Put code examples on same line?
-# Clarify one clue per number
-# Where to put instructions 
-# Prompt user if they want instructions
-# Prompt user if they want clue example
 # Put game.show for in CODE class
 # Put 12-turn logic in play method
 # Clean up code for solved?
