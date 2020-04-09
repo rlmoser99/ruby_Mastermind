@@ -14,3 +14,12 @@ class String
   def bold;           "\e[1m#{self}\e[22m" end
   def underline;      "\e[4m#{self}\e[24m" end
 end
+
+
+
+# print "  #{num}  ".bg_blue if num == "1"
+# print "  #{num}  ".bg_green if num == "2"
+# print "  #{num}  ".bg_magenta if num == "3"
+# print "  #{num}  ".bg_cyan.black.bold if num == "4"
+# print "  #{num}  ".bg_brown.black.bold if num == "5"
+# print "  #{num}  ".bg_red.black.bold if num == "6"

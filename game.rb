@@ -7,7 +7,7 @@ class Game
     turn = 1
     while turn <= 12 do
       puts "Turn ##{turn}: Type in four numbers (1-6) to guess code, or 'q' to quit game"
-      puts "Choose carefully. This is your last turn to win!".red if turn == 12
+      puts "Choose carefully. This is your last chance to win!".red if turn == 12
       turn += 1
       loop do
         @guess = gets.chomp
@@ -97,6 +97,19 @@ class Game
     # puts ""
     self.player_turns
     self.end
+    puts colorify_white("1")
+    puts colorify_white("2")
+    puts colorify_white("3")
+    puts colorify_white("4")
+    puts colorify_white("5")
+    puts colorify_white("6")
+
+    puts colorify_black("1")
+    puts colorify_black("2")
+    puts colorify_black("3")
+    puts colorify_black("4")
+    puts colorify_black("5")
+    puts colorify_black("6")
   end
 
 end
