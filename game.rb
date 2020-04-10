@@ -13,9 +13,7 @@ class Game
         puts @show.content("turn_error")
       end
       break if @guess.downcase == "q"
-      # EDIT!!!
       self.reveal(@guess.split(//))
-      # self.reveal
       break if solved?(@master_code.numbers, @guess.split(//))
       self.compare(@guess.split(//))
     end
@@ -34,7 +32,7 @@ class Game
     index = 0
     4.times do
       if master[index] == guess[index]
-        print " * ".bg_gray.green
+        print @show.color_clue ("*")
         print " "
         master[index] = "*"
         guess[index]  = "*"
@@ -47,7 +45,7 @@ class Game
     i = 0
     4.times do
       if guess[i] != "*" && master.include?(guess[i])
-        print " ? ".bg_gray.red
+        print @show.color_clue ("?")
         print " "
         remove = master.find_index(guess[i])
         master[remove] = "?"
@@ -87,7 +85,6 @@ class Game
     puts @show.instructions
     # puts "MASTER CODE (for trouble-shooting):"
     # self.show(@master_code.numbers)
-    # puts ""
     self.player_turns
     self.end
   end

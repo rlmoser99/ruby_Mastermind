@@ -16,34 +16,20 @@ class Display
     @code_backgrounds[number]
   end
 
-  # def color_code (number)
-  #   @code_backgrounds = {
-  #     "1" => "44"\e[m  1  \e[0m",
-  #     "2" => "42",
-  #     "3" => "45",
-  #     "4" => "30;1m\e[46",
-  #     "5" => "30;1m\e[43",
-  #     "6" => "30;1m\e[41"
-  #   }
-  #   return "\e[#{@code_backgrounds[number]}m  #{number}  \e[0m"
-  # end
-
   def color_clue (item)
     @clue_backgrounds = {
-      "*" => "32;1m\e[47",
-      "?" => "31m\e[47",
+      "*" => "\e[32;1m\e[47m * \e[0m",
+      "?" => "\e[31m\e[47m ? \e[0m",
     }
-    return "\e[#{@clue_backgrounds[item]}m #{item} \e[0m"
-    
+    @clue_backgrounds[item]
   end
 
-  def formatting (number, string)
+  def formatting (description, string)
     @text_formatting = {
-      "underline" => "4;1",
-      "red" => "31;1",
+      "underline" => "\e[4;1m#{string}\e[0m",
+      "red" => "\e[31;1m#{string}\e[0m",
     }
-    return "\e[#{@text_formatting[number]}m#{string}\e[0m"
-    
+    @text_formatting[description]  
   end
 
   def instructions
