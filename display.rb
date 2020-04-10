@@ -6,16 +6,27 @@ class Display
 
   def color_code (number)
     @code_backgrounds = {
-      "1" => "44",
-      "2" => "42",
-      "3" => "45",
-      "4" => "30;1m\e[46",
-      "5" => "30;1m\e[43",
-      "6" => "30;1m\e[41"
+      "1" => "\e[44m  1  \e[0m",
+      "2" => "\e[42m  2  \e[0m",
+      "3" => "\e[45m  3  \e[0m",
+      "4" => "\e[30;1m\e[46m  4  \e[0m",
+      "5" => "\e[30;1m\e[43m  5  \e[0m",
+      "6" => "\e[30;1m\e[41m  6  \e[0m"
     }
-    return "\e[#{@code_backgrounds[number]}m  #{number}  \e[0m"
-    
+    @code_backgrounds[number]
   end
+
+  # def color_code (number)
+  #   @code_backgrounds = {
+  #     "1" => "44"\e[m  1  \e[0m",
+  #     "2" => "42",
+  #     "3" => "45",
+  #     "4" => "30;1m\e[46",
+  #     "5" => "30;1m\e[43",
+  #     "6" => "30;1m\e[41"
+  #   }
+  #   return "\e[#{@code_backgrounds[number]}m  #{number}  \e[0m"
+  # end
 
   def color_clue (item)
     @clue_backgrounds = {
@@ -36,10 +47,6 @@ class Display
   end
 
   def instructions
-    @instructions_text
-  end
-
-  def content
     @instructions_text = <<~HEREDOC
     #{formatting("underline", "How to play Mastermind:")}
     There are six different number/color combinations:
@@ -74,6 +81,20 @@ class Display
     The 'master code' has been set and it's your turn to guess the code.
     
     HEREDOC
+    @instructions_text
+  end
+
+  def content (number = nil, item)
+    @prompts = {
+      "turn_prompt" => "Turn ##{number}: Type in four numbers (1-6) to guess code, or 'q' to quit game.",
+      "last_turn" => "#{formatting("red", "Choose carefully. This is your last chance to win!")}",
+      "turn_error" => "#{formatting("red", "Your guess should only be 4 digits between 1-6.")}",
+      "clues" => "  Clues: ",
+      "won" => "  You broke the code! Congratulations, you win! \n\n",
+      "lost" => "#{formatting("red", "Game over. ¯\\_(ツ)_/¯ ")} \n\n",
+      "reveal_code" => "Here is the 'master code' that you were trying to break:"
+    }
+    @prompts[item]
   end
 
 end
