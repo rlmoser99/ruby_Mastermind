@@ -1,5 +1,4 @@
 class Game
-  
   def player_turns
     turn = 1
     while turn <= 12 do
@@ -28,62 +27,29 @@ class Game
     print @show.clues(@exact_number, @same_number)
   end
 
-  # def exact_matches(master, guess)
-  #   index = 0
-  #   exact = 0
-  #   4.times do
-  #     if master[index] == guess[index]
-  #       exact += 1
-  #       master[index] = "*"
-  #       guess[index]  = "*"
-  #     end
-  #     index += 1
-  #   end
-  #   return exact
-  # end
-
   def exact_matches(master, guess)
-    index = 0
     exact = 0
-    4.times do
-      if master[index] == guess[index]
-        exact += 1
+    master.each_with_index do | item, index |
+      if item == guess[index]
+        exact += 1 
         master[index] = "*"
         guess[index]  = "*"
       end
-      index += 1
     end
-    return exact
+    exact
   end
 
-  # def right_numbers(master, guess)
-  #   i = 0
-  #   same = 0
-  #   4.times do
-  #     if guess[i] != "*" && master.include?(guess[i])
-  #       same += 1
-  #       remove = master.find_index(guess[i])
-  #       master[remove] = "?"
-  #       guess[i]  = "?"
-  #     end
-  #     i += 1
-  #   end 
-  #   return same
-  # end
-  
   def right_numbers(master, guess)
-    i = 0
     same = 0
-    4.times do
-      if guess[i] != "*" && master.include?(guess[i])
+    guess.each_with_index do | item, index |
+      if guess[index] != "*" && master.include?(guess[index])
         same += 1
-        remove = master.find_index(guess[i])
+        remove = master.find_index(guess[index])
         master[remove] = "?"
-        guess[i]  = "?"
+        guess[index]  = "?"
       end
-      i += 1
-    end 
-    return same
+    end
+    same
   end
 
   def solved? (master, guess)
@@ -114,9 +80,6 @@ class Game
     @show = Display.new("show")
     @master_code = Code.new
     puts @show.instructions
-    # puts "MASTER CODE (for trouble-shooting):"
-    reveal(@master_code.numbers)
-    puts ""
     player_turns
     game_over
   end
