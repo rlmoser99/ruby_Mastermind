@@ -14,13 +14,13 @@ class Game
       break if @guess.downcase == "q"
       reveal(@guess.split(//))
       break if solved?(@master_code.numbers, @guess.split(//))
-      compare(@guess.split(//))
+      compare(@master_code.numbers, @guess.split(//))
     end
   end
 
-  def compare (guess)
+  def compare (master, guess)
     temp_master = []
-    @master_code.numbers.each { |num| temp_master << num }
+    master.each { |num| temp_master << num }
     print @show.content("clues")
     @exact_number = exact_matches(temp_master, guess)
     @same_number = right_numbers(temp_master, guess)
@@ -78,10 +78,41 @@ class Game
 
   def play
     @show = Display.new("show")
-    @master_code = Code.new
     puts @show.instructions
+    loop do
+      @answer = gets.chomp
+      break if @answer == "1" || @answer == "2"
+      puts @show.content("answer_error")
+    end
+    code_maker if @answer == "1"
+    code_breaker if @answer == "2"
+  end
+
+  def code_maker
+    puts @show.content("maker_start")
+    loop do
+      @maker_input = gets.chomp
+      break if @maker_input.match(/[1-6][1-6][1-6][1-6]/) && @maker_input.length == 4
+      puts @show.content("maker_error")
+    end
+    @maker_code = @maker_input.split(//)
+    reveal(@maker_code)
+    puts @show.content("maker_code")
+    computer_turns
+  end
+  
+  def code_breaker
+    @master_code = Code.new
+    puts @show.content("breaker_start")
     player_turns
     game_over
+  end
+
+  def computer_turns 
+    puts "computer_turns"
+    @computer_guess = ["1", "1", "1", "1"]
+    reveal(@computer_guess)
+    compare(@maker_code, @computer_guess)
   end
 
 end

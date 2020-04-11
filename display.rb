@@ -43,20 +43,25 @@ class Display
 
 
     #{formatting("underline", "How to play Mastermind:")}
+
+    This is a 1-player game against the computer. 
+    You can choose to be the code #{formatting("underline", "maker")} or the code #{formatting("underline", "breaker")}.
+
     There are six different number/color combinations:
     
     #{color_code("1")}#{color_code("2")}#{color_code("3")}#{color_code("4")}#{color_code("5")}#{color_code("6")}
     
     
-    The computer will randomly choose four to create a 'master code' for you to break. For example,
-    
+    The code maker will choose four to create a 'master code'. For example,
+
     #{color_code("1")}#{color_code("3")}#{color_code("4")}#{color_code("1")}
     
     As you can see, there can be #{formatting("red", "more then one")} of the same number/color.
-    In order to win, you must guess the 'master code' in 12 or less turns.
+    In order to win, the code breaker needs to guess the 'master code' in 12 or less turns.
+    
     
     #{formatting("underline", "Clues:")}
-    After each guess, you will be given up to four clues to help you crack the code.
+    After each guess, there will be up to four clues to help crack the code.
     
     #{color_clue("*")} This clue means you have 1 correct number in the correct location.
     
@@ -72,8 +77,10 @@ class Display
     The guess had 1 correct number in the correct location and 2 correct numbers in a wrong location.
     
     #{formatting("underline", "It's time to play!")}
-    The 'master code' has been set and it's your turn to guess the code.
-    
+    Would you like to be the code MAKER or code BREAKER?
+
+    Press '1' to be the code MAKER
+    Press '2' to be the code BREAKER
     HEREDOC
     @instructions_text
   end
@@ -87,11 +94,14 @@ class Display
       "won" => "  You broke the code! Congratulations, you win! \n\n",
       "lost" => "#{formatting("red", "Game over. ¯\\_(ツ)_/¯ ")} \n\n",
       "reveal_code" => "Here is the 'master code' that you were trying to break:",
-      "end" => "\n\n\nDo you want to play again? Press 'y' for yes or 'n' for no."
+      "end" => "\n\n\nDo you want to play again? Press 'y' for yes or 'n' for no.",
+      "answer_error" => "#{formatting("red", "Enter '1' to be the code MAKER or '2' to be the code BREAKER.")}",
+      "breaker_start" => "The computer has set the 'master code' and now it's time for you to break the code.\n\n",
+      "maker_start" => "Please enter a 4-digit 'master code' for the computer to break.",
+      "maker_error" => "#{formatting("red", "Your 'master code' must be 4 digits long, using numbers between 1-6.")}",
+      "maker_code" => "is your 'master code'.\n\n"
     }
     @prompts[item]
   end
 
 end
-
-
