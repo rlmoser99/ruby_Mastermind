@@ -21,9 +21,12 @@ class Game
   def compare (master, guess)
     temp_master = []
     master.each { |num| temp_master << num }
+    temp_guess = []
+    guess.each { |num| temp_guess << num }
     print @show.content("clues")
-    @exact_number = exact_matches(temp_master, guess)
-    @same_number = right_numbers(temp_master, guess)
+    @exact_number = exact_matches(temp_master, temp_guess)
+    @same_number = right_numbers(temp_master, temp_guess)
+    @total_number = @exact_number + @same_number
     print @show.clues(@exact_number, @same_number)
   end
 
@@ -109,10 +112,30 @@ class Game
   end
 
   def computer_turns 
-    puts "computer_turns"
-    @computer_guess = ["1", "1", "1", "1"]
+    puts "First Turn"
+    sleep(1)
+    @number_guess = 1
+    @computer_guess = []
+    @computer_guess << @number_guess.to_s until @computer_guess.length == 4
     reveal(@computer_guess)
     compare(@maker_code, @computer_guess)
+    until @total_number == 4 do
+      puts "Next Turn"
+      sleep(1)
+      @number_guess += 1
+      @computer_guess.pop(4 - @total_number)
+      @computer_guess << @number_guess.to_s until @computer_guess.length == 4
+      reveal(@computer_guess)
+      compare(@maker_code, @computer_guess)
+    end
+    until solved?(@maker_code, @computer_guess)
+      puts "Next Turn"
+      @computer_guess.shuffle!
+      print @computer_guess
+      puts ""
+      reveal(@computer_guess)
+      compare(@maker_code, @computer_guess)
+    end
   end
 
 end
