@@ -5,11 +5,11 @@ module GameLogic
     master.each { |num| temp_master << num }
     temp_guess = []
     guess.each { |num| temp_guess << num }
-    print @show.content("clues")
+    print content("clues")
     @exact_number = exact_matches(temp_master, temp_guess)
     @same_number = right_numbers(temp_master, temp_guess)
     @total_number = @exact_number + @same_number
-    print @show.clues(@exact_number, @same_number)
+    print clues(@exact_number, @same_number)
   end
 
   def exact_matches(master, guess)
@@ -42,22 +42,22 @@ module GameLogic
     correct_guess = true if master == guess
   end
 
-  def game_over
-    if solved?(@master_code.numbers, @guess.split(//))
-      puts @show.content("won")
+  def game_over (master, guess)
+    if solved?(master, guess)
+      puts content("won")
     else
-      puts @show.content("lost")
-      puts @show.content("reveal_code")
-      reveal(@master_code.numbers)
+      puts content("lost")
+      puts content("reveal_code")
+      reveal(master)
     end
-    puts @show.content("end")
+    puts content("end")
     @replay = gets.chomp until @replay == "y" || @replay == "n"
     Game.new.play if @replay.downcase == "y"
   end
 
   def reveal (array)
     array.each do | num |
-      print @show.color_code (num)
+      print color_code (num)
     end
   end
   

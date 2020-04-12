@@ -1,8 +1,4 @@
-class Display
-
-  def initialize(name)
-    @name = name
-  end
+module Display
 
   def color_code (number)
     @code_backgrounds = {
