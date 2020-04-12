@@ -99,7 +99,8 @@ class Display
       "breaker_start" => "The computer has set the 'master code' and now it's time for you to break the code.\n\n",
       "maker_start" => "Please enter a 4-digit 'master code' for the computer to break.",
       "maker_error" => "#{formatting("red", "Your 'master code' must be 4 digits long, using numbers between 1-6.")}",
-      "maker_code" => "is your 'master code'.\n\n"
+      "maker_code" => "is your 'master code'.\n\n",
+      "computer_turn" => "Computer Turn ##{number}:"
     }
     @prompts[item]
   end
