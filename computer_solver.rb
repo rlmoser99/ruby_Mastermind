@@ -27,6 +27,7 @@ class ComputerSolver
     find_code_order
   end
 
+  # Have computer pick numbers to add to code at random, instead of @number_guess++
   def find_code_numbers
     until @total_number == 4 do
       puts content(@turn_count, "computer_turn")
@@ -64,7 +65,7 @@ class ComputerSolver
     find_which_last_two_is_correct(0) if @guess_results[0][0] == 1 && @guess_results[1][0] == 0
     find_either_one_in_first_or_last_half_is_correct(1) if @guess_results[0][0] == 1 && @guess_results[1][0] == 2
     find_either_one_in_first_or_last_half_is_correct(0) if @guess_results[0][0] == 2 && @guess_results[1][0] == 1
-    first_guess_one_01_or_duplicate_23 if @guess_results[0][0] == 1 && @guess_results[1][0] == 1
+    find_correct_one if @guess_results[0][0] == 1 && @guess_results[1][0] == 1
     switch_first_two_and_last_two if @guess_results[0][0] == 0 && @guess_results[1][0] == 0
     need_more_info if @guess_results[0][0] == 2 && @guess_results[1][0] == 2
     # until solved?(@maker_code, @computer_guess) || @turn_count > 12
@@ -107,6 +108,7 @@ class ComputerSolver
     new_array
   end
 
+  # NOT REALLY A MAJOR BRANCH - if called right after 'compare_two_guesses' it is the only one that is needed to solve.
   def switch_first_and_second (index)
     puts "SWITCH FIRST AND SECOND"
     puts content(@turn_count, "computer_turn")
@@ -118,6 +120,8 @@ class ComputerSolver
     @turn_count += 1
   end
 
+  # MAJOR BRANCH after 'compare_two_guesses'
+  # STILL NEED ADDITIONAL PATHS TO FOLLOW
   def find_which_last_two_is_correct (index)
     # This method will switch [1,2] to determine whether [2 or 3] is correct
     puts "FIND WHICH LAST TWO IS CORRECT"
@@ -129,22 +133,55 @@ class ComputerSolver
     @turn_count += 1
     puts "The guess results are now #{@guess_results}"
     puts ""
-    puts "The index [2] is correct. I think [1] is it's duplicate number." if @guess_results[index][0] == 1 && @guess_results[-1][0] == 1 
-    # MAYBE? - I am almost positive that these would be duplicate numbers
-    @solved_code[2] = @guess_results[index][1][2] if @guess_results[index][0] == 1 && @guess_results[-1][0] == 1 
-    @solved_code[1] = @guess_results[-1][1][1] if @guess_results[index][0] == 1 && @guess_results[-1][0] == 1 
-    puts "guess [3] is in the right spot and either [1 or 2] is in the right spot" if @guess_results[index][0] == 1 && @guess_results[-1][0] == 2
-    puts "Will need to shuffle [0, 1, or 2]" if @guess_results[index][0] == 1 && @guess_results[-1][0] == 2
-    @solved_code[3] = @guess_results[index][1][3] if @guess_results[index][0] == 1 && @guess_results[-1][0] == 2
-    puts "index [2] is in the right spot" if @guess_results[index][0] == 1 && @guess_results[-1][0] == 0
-    puts "Will need to shuffle [0, 1, or 3]" if @guess_results[index][0] == 1 && @guess_results[-1][0] == 0
-    @solved_code[2] = @guess_results[index][1][2] if @guess_results[index][0] == 1 && @guess_results[-1][0] == 0
+    found_which_last_two_is_correct (index)  
+  end
+
+  def found_which_last_two_is_correct (index)
+    puts "FOUND WHICH LAST TWO IS CORRECT"
+    if @guess_results[index][0] == 1 && @guess_results[-1][0] == 1
+      puts "Confirmed - The index [2] is correct. guess [1] is currect (because its a duplicate number)."
+      puts "Example: 5226 code, 2625 first guess"
+      @solved_code[2] = @guess_results[index][1][2]
+      @solved_code[1] = @guess_results[-1][1][1]
+    elsif @guess_results[index][0] == 1 && @guess_results[-1][0] == 2
+      puts "Confirmed. Guess [3] is in the right spot and either [1 or 2] is in the right spot" 
+      @solved_code[3] = @guess_results[index][1][3]
+    elsif @guess_results[index][0] == 1 && @guess_results[-1][0] == 0
+      puts "Confirmed. Index [2] is in the right spot. Switch [0, 1, or 3]"
+      @solved_code[2] = @guess_results[index][1][2]
+    else
+      puts ""
+      puts "Are there any other possibilities?!?!!" 
+      puts ""
+    end
     puts "The solved code is now #{@solved_code}"
   end
   
+  # MAJOR BRANCH after 'compare_two_guesses'
   def find_either_one_in_first_or_last_half_is_correct (index)
-    # This method will switch [1,2] to find the correct one(s)
     puts "FIND EITHER ONE IN FIRST OR LAST HALF IS CORRECT"
+    switch_second_and_third (index)
+    found_one_in_first_or_last_half_is_correct (index)
+  end
+
+  def found_one_in_first_or_last_half_is_correct (index)
+    puts "FOUND ONE IN FIRST OR LAST HALF IS CORRECT"
+    if @guess_results[index][0] == 2 && @guess_results[-1][0] == 1
+      puts "Confirmed. Either index [1 and 3] or [0 and 2] are correct?"
+    elsif @guess_results[index][0] == 2 && @guess_results[-1][0] == 0
+      puts "Confirmed. Index [1, 2] are correct. SOLVE: switch index [0 and 3]"
+      switch_first_and_last(index)
+    elsif @guess_results[index][0] == 2 && @guess_results[-1][0] == 2
+      puts "Confirmed. Index and Guess [1, 2] is correct and duplicate numbers."
+    else
+      puts ""
+      puts ""
+      puts "Are there any other possibilities?!?!!" 
+    end
+  end
+
+  def switch_second_and_third (index)
+    puts "SWITCH SECOND AND THIRD"
     puts content(@turn_count, "computer_turn")
     guess = switch_positions @guess_results[index][1], 1, 2
     reveal(guess)
@@ -153,13 +190,6 @@ class ComputerSolver
     @turn_count += 1
     puts "The guess results are now #{@guess_results}"
     puts ""
-    puts "Confirmed. Either index [1 and 3] or [0 and 2] are correct?" if @guess_results[index][0] == 2 && @guess_results[-1][0] == 1
-    puts "Confirm possibility? [0] is correct?" if @guess_results[index][0] == 2 && @guess_results[-1][0] == 1
-    puts "Confirm possibility? [0] is correct?" if @guess_results[index][0] == 2 && @guess_results[-1][0] == 1
-    puts "Confirm possibility? either [2, 3] are duplicate?" if @guess_results[index][0] == 2 && @guess_results[-1][0] == 1
-    puts "Are there any other possibilities that I'm missing?"
-    puts "Confirmed. Index [1, 2] are correct. SOLVE: switch index [0 and 3]" if @guess_results[index][0] == 2 && @guess_results[-1][0] == 0
-    switch_first_and_last(index) if @guess_results[index][0] == 2 && @guess_results[-1][0] == 0
   end
 
   def switch_first_and_last (index)
@@ -174,11 +204,45 @@ class ComputerSolver
     puts ""
   end
 
-  def first_guess_one_01_or_duplicate_23
-    puts "FIRST GUESS ONE 01 OR DUPLICATE 23"
-    puts "The FIRST guess has 1 correct in [0,1] position or if [2,3] were duplicate numbers one of them is correct"
+  # MAJOR BRANCH after 'compare_two_guesses'
+  def find_correct_one
+    puts "FIND CORRECT ONE"
+    switch_second_and_third (0)
+    if @guess_results[0][1][3] == @guess_results[0][1][2] && @guess_results[-1][0] == 2
+      puts "Confirmed - comparision guesses [2,3] are duplicate numbers. last guess [3] is correct and either [1 or 2]" 
+    elsif @guess_results[0][1][3] != @guess_results[0][1][2] && @guess_results[-1][0] == 2
+      puts "Confirmed - Code [2,3] must be duplicate numbers. Look at guess for duplicate numbers."
+    else
+      puts ""
+      puts ""
+      puts "Are there any other possibilities?!?!!" 
+      puts "Need confirmation - maybe either guess [0 or 1] is correct"
+    end
+    # puts "Confirmed - guess [3] is correct. And either guess [1 or 2] is correct." if @guess_results[0][0] == 1 && @guess_results[-1][0] == 2
+    puts "Confirmed - either guess [1 or 2] is correct" if @guess_results[0][0] == 1 && @guess_results[-1][0] == 1
+    puts "Need confirmation - guess [2] is correct" if @guess_results[0][0] == 1 && @guess_results[-1][0] == 0
   end
+
+  # def found_correct_one
+  #   puts "FOUND CORRECT ONE"
+  #   if @guess_results[0][0] == 1 && @guess_results[-1][0] == 2
+  #     puts "Confirmed - guess [3] is correct. And either guess [1 or 2] is correct."
+  #     puts "WITH DOUBLES - look closer at this one"
+  #     puts "Other situation???"
+  #   elsif @guess_results[0][0] == 1 && @guess_results[1][0] == 1
+  #     puts "Confirmed - either guess [1 or 2] is correct"
+  #     puts "Need confirmation - guess[3] is correct."
+  #     puts "LOOK CLOSER AT THIS ONE - DOUBLES!!! example: 6332 - 2633"
+  #   elsif @guess_results[0][0] == 1 && @guess_results[1][0] == 0
+  #     puts "Need confirmation - guess [2] is correct"
+  #   else
+  #     puts ""
+  #     puts ""
+  #     puts "Are there any other possibilities?!?!!" 
+  #   end
+  # end
   
+  # MAJOR BRANCH after 'compare_two_guesses'
   def switch_first_two_and_last_two
     puts "SWITCH FIRST TWO AND LAST TWO"
     puts content(@turn_count, "computer_turn")
@@ -198,6 +262,7 @@ class ComputerSolver
 
   # compare_two_guesses can be re-written to use this method too ??
   def switch_last_two
+    puts "SWITCH LAST TWO"
     puts content(@turn_count, "computer_turn")
     guess = switch_positions @guess_results[-1][1], 2, 3
     reveal(guess)
@@ -206,24 +271,45 @@ class ComputerSolver
     @turn_count += 1
     puts "The guess results are now #{@guess_results}"
     puts ""
-    # Working on seeing if below is a possibility:
-    puts "Confirm possibility. Switch [2, 3] back and switch [0, 1]" if @guess_results[-1][0] == 0
+    puts "Switch [2, 3] back and switch [0, 1] to win!" if @guess_results[-2][0] == 2 && @guess_results[-1][0] == 0
+    switch_last_two_back_and_switch_first_two if @guess_results[-2][0] == 2 && @guess_results[-1][0] == 0
   end
 
-  # FOR THE WIN!
-  def flip_01_and_23
-    puts "FLIP 01 AND 23"
-    puts "COMPLTELY all wrong, but know that it will be 100% correct if we switch 0 & 1 and 2 & 3"
-    # puts content(@turn_count, "computer_turn")
-    # @next_guess[0], @next_guess[1], @next_guess[2], @next_guess[3] = @next_guess[1], @next_guess[0], @next_guess[3], @next_guess[2]
-    # puts "The next guess will be #{@next_guess}"
-    # reveal(@next_guess)
-    # compare(@maker_code, @next_guess)
+  def switch_last_two_back_and_switch_first_two
+    puts "SWITCH LAST TWO BACK AND SWITCH FIRST TWO"
+    puts content(@turn_count, "computer_turn")
+    guess = switch_positions @guess_results[-1][1], 2, 3
+    guess = switch_positions guess, 0, 1
+    reveal(guess)
+    compare(@maker_code, guess)
+    @guess_results << [@exact_number, guess]
+    @turn_count += 1
+    puts "The guess results are now #{@guess_results}"
+    puts ""
   end
 
+  # def switch_first_and_third (index)
+  #   puts "SWITCH FIRST AND THIRD"
+  #   puts content(@turn_count, "computer_turn")
+  #   guess = switch_positions @guess_results[index][1], 0, 2
+  #   reveal(guess)
+  #   compare(@maker_code, guess)
+  #   @guess_results << [@exact_number, guess]
+  #   @turn_count += 1
+  #   puts "The guess results are now #{@guess_results}"
+  #   puts ""
+  # end
+
+  # MAJOR BRANCH after 'compare_two_guesses' 
   def need_more_info
-    puts "NEED MORE INFO"
-    puts "HARDEST: Either 1 of [0, 1] and 1 of [2, 3] is correct (maybe duplicate numbers at end?) or both of [0,1] are correct, or if [2,3] were duplicate numbers and they could be correct." 
+    puts "NEED MORE INFO - LOTS OF POSSIBILITIES"
+    puts "Need confirmation - Either 1 of [0, 1] and 1 of [2, 3] is correct (maybe duplicate numbers at end?)" 
+    puts "Need confirmation - Or both of [0,1] are correct." 
+    puts "Need confirmation - Or if [2,3] were duplicate numbers and they could be correct." 
+    puts "Confirmed - guess [2, 3] were duplicate numbers. One guess [2, 3] is correct. One guess [1, 2] is correct."
+    puts ""
+    puts ""
+    puts "Are there any other possibilities?!?!!" 
   end
 
 end
