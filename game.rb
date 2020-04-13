@@ -6,7 +6,8 @@ class Game
   include Display
 
   def play
-    puts instructions
+    # puts instructions
+    puts "'1' to MAKE and '2' to BREAK - removed instructions temporarily"
     loop do
       @answer = gets.chomp
       break if @answer == "1" || @answer == "2"
