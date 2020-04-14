@@ -10,7 +10,6 @@ class ComputerSolver
   end
 
   def computer_turns
-    # FOLLOWING LINES CAME FROM GAME - REARRANGE? or RENAME method?
     puts content("maker_start")
     loop do
       @maker_input = gets.chomp
@@ -44,10 +43,6 @@ class ComputerSolver
     shuffle_guess(computer_guess) if @exact_number == 0
   end
 
-  def create_permutations (array)
-    @code_permutations = array.permutation.to_a
-  end
-
   def shuffle_guess (array)
     until @exact_number > 0
       array.shuffle!
@@ -65,8 +60,6 @@ class ComputerSolver
     create_permutations (array)
     reduce_permutations (array)
     until @turn_count > 12 || solved?(@maker_code, array)
-      # Remove the first permutation, since it was the last guess.
-      @code_permutations.shift
       puts content(@turn_count, "computer_turn")
       sleep(1)
       reveal(@code_permutations[0])
@@ -78,10 +71,18 @@ class ComputerSolver
     end
   end
 
+  def create_permutations (array)
+    @code_permutations = array.permutation.to_a
+  end
+
   def reduce_permutations (array)
+    # Remove the last computer guess
+    @code_permutations.shift
     @code_permutations.filter! do | item |
       compare(@maker_code, item) >= compare(@maker_code, array)
     end
   end
 
 end
+
+# Create "turn_order" method and put all methods in one place. Make it work for human_solver too.
