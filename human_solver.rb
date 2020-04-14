@@ -33,7 +33,7 @@ class HumanSolver
       show_clues @exact_number, @same_number
     @same_number
     end
-    game_over(@computer_code, @guess.split(//))
+    game_over(@computer_code, @guess.split(//), "human")
   end
 
 end

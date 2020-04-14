@@ -41,17 +41,21 @@ module GameLogic
     correct_guess = true if master == guess
   end
 
-  def game_over (master, guess)
-    if solved?(master, guess)
-      puts content("won")
-    else
-      puts content("lost")
-      puts content("reveal_code")
-      reveal(master)
-    end
-    puts content("end")
-    @replay = gets.chomp until @replay == "y" || @replay == "n"
+  def game_over (master, guess, solver)
+    puts content("computer_won") if solver == "computer" && solved?(master, guess)
+    puts content("computer_lost") if solver == "computer" && !solved?(master, guess)
+    puts content("human_won") if solver == "human" && solved?(master, guess)
+    human_lost(master) if solver == "human" && !solved?(master, guess)
+    puts content("play_again")
+    @replay = gets.chomp
+    puts content("thanks") if @replay.downcase != "y"
     Game.new.play if @replay.downcase == "y"
+  end
+
+  def human_lost (master)
+    puts content("human_lost") 
+    puts content("reveal_code") 
+    reveal(master)
   end
 
   # This should be moved to display?!?!?

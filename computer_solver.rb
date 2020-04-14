@@ -62,6 +62,8 @@ class ComputerSolver
     until @turn_count > 12 || solved?(@maker_code, array)
       puts content(@turn_count, "computer_turn")
       sleep(1)
+      # Remove the last computer guess
+      @code_permutations.shift
       reveal(@code_permutations[0])
       compare(@maker_code, @code_permutations[0])
       show_clues @exact_number, @same_number
@@ -69,6 +71,7 @@ class ComputerSolver
       reduce_permutations (@code_permutations[0])
       @turn_count += 1
     end
+    game_over(@maker_code, @code_permutations[0], "computer")
   end
 
   def create_permutations (array)
@@ -76,8 +79,6 @@ class ComputerSolver
   end
 
   def reduce_permutations (array)
-    # Remove the last computer guess
-    @code_permutations.shift
     @code_permutations.filter! do | item |
       compare(@maker_code, item) >= compare(@maker_code, array)
     end
