@@ -5,19 +5,6 @@ module GameLogic
     master.each { |num| temp_master << num }
     temp_guess = []
     guess.each { |num| temp_guess << num }
-    print content("clues")
-    @exact_number = exact_matches(temp_master, temp_guess)
-    @same_number = right_numbers(temp_master, temp_guess)
-    @total_number = @exact_number + @same_number
-    print clues(@exact_number, @same_number)
-  end
-
-  # Need to re-factor code, so this only happens once.
-  def computer_compare (master, guess)
-    temp_master = []
-    master.each { |num| temp_master << num }
-    temp_guess = []
-    guess.each { |num| temp_guess << num }
     @exact_number = exact_matches(temp_master, temp_guess)
     @same_number = right_numbers(temp_master, temp_guess)
     @total_number = @exact_number + @same_number
@@ -67,6 +54,7 @@ module GameLogic
     Game.new.play if @replay.downcase == "y"
   end
 
+  # This should be moved to display?!?!?
   def reveal (array)
     array.each do | num |
       print color_code (num)

@@ -20,7 +20,8 @@ module Display
     @clue_backgrounds[item]
   end
 
-  def clues (exact, same)
+  def show_clues (exact, same)
+    print "  Clues: "
     exact.times {print color_clue("*")}
     same.times {print color_clue("?")}
     puts ""
@@ -86,7 +87,7 @@ module Display
       "turn_prompt" => "Turn ##{number}: Type in four numbers (1-6) to guess code, or 'q' to quit game.",
       "last_turn" => "#{formatting("red", "Choose carefully. This is your last chance to win!")}",
       "turn_error" => "#{formatting("red", "Your guess should only be 4 digits between 1-6.")}",
-      "clues" => "  Clues: ",
+      # "clues" => "  Clues: ",
       "won" => "  You broke the code! Congratulations, you win! \n\n",
       "lost" => "#{formatting("red", "Game over. ¯\\_(ツ)_/¯ ")} \n\n",
       "reveal_code" => "Here is the 'master code' that you were trying to break:",

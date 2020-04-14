@@ -10,7 +10,7 @@ class ComputerSolver
   end
 
   def computer_turns
-    # FOLLOWING LINES CAME FROM GAME - REARRANGE?
+    # FOLLOWING LINES CAME FROM GAME - REARRANGE? or RENAME method?
     puts content("maker_start")
     loop do
       @maker_input = gets.chomp
@@ -20,7 +20,6 @@ class ComputerSolver
     @maker_code = @maker_input.split(//)
     reveal(@maker_code)
     puts content("maker_code")
-    @turn_count = 1
     find_code_numbers
   end
 
@@ -28,14 +27,16 @@ class ComputerSolver
     options = ["1", "2", "3", "4", "5", "6"]
     options.shuffle!
     option_index = 0
+    @turn_count = 1
     computer_guess = []
     until @total_number == 4 do
       puts content(@turn_count, "computer_turn")
-      # sleep(1)
+      sleep(1)
       computer_guess.pop(4 - @total_number) if @turn_count != 1
       computer_guess << options[option_index] until computer_guess.length == 4
       reveal(computer_guess)
       compare(@maker_code, computer_guess)
+      show_clues @exact_number, @same_number
       @turn_count += 1
       option_index += 1
     end
@@ -45,19 +46,16 @@ class ComputerSolver
 
   def create_permutations (array)
     @code_permutations = array.permutation.to_a
-    # puts "CODE PERMUTATIONS:"
-    # @code_permutations.each do | array |
-    #   print array
-    #   puts ""
-    # end
   end
 
   def shuffle_guess (array)
     until @exact_number > 0
       array.shuffle!
       puts content(@turn_count, "computer_turn")
+      sleep(1)
       reveal(array)
       compare(@maker_code, array)
+      show_clues @exact_number, @same_number
       @turn_count += 1
     end
     find_code_order (array)
@@ -70,26 +68,20 @@ class ComputerSolver
       # Remove the first permutation, since it was the last guess.
       @code_permutations.shift
       puts content(@turn_count, "computer_turn")
+      sleep(1)
       reveal(@code_permutations[0])
       compare(@maker_code, @code_permutations[0])
+      show_clues @exact_number, @same_number
       break if solved?(@maker_code, @code_permutations[0])
       reduce_permutations (@code_permutations[0])
       @turn_count += 1
     end
   end
 
-  # WHAT HAPPENS IF GAME SOLVES SUPER EARLY!?!??
-
   def reduce_permutations (array)
-    # puts "reduce permutations"
     @code_permutations.filter! do | item |
-      computer_compare(@maker_code, item) >= computer_compare(@maker_code, array)
+      compare(@maker_code, item) >= compare(@maker_code, array)
     end
-    # puts "REDUCED:"
-    # @code_permutations.each do | code |
-    #   print code
-    #   puts ""
-    # end
   end
 
 end
