@@ -12,6 +12,18 @@ module GameLogic
     print clues(@exact_number, @same_number)
   end
 
+  # Need to re-factor code, so this only happens once.
+  def computer_compare (master, guess)
+    temp_master = []
+    master.each { |num| temp_master << num }
+    temp_guess = []
+    guess.each { |num| temp_guess << num }
+    @exact_number = exact_matches(temp_master, temp_guess)
+    @same_number = right_numbers(temp_master, temp_guess)
+    @total_number = @exact_number + @same_number
+    @exact_number
+  end
+
   def exact_matches(master, guess)
     exact = 0
     master.each_with_index do | item, index |
