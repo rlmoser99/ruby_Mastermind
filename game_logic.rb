@@ -41,8 +41,8 @@ module GameLogic
     correct_guess = true if master == guess
   end
 
-  def game_over (master, guess, solver)
-    puts game_message("computer_won") if solver == "computer" && solved?(master, guess)
+  def game_over (master, guess, solver, turn = nil)
+    computer_won(turn) if solver == "computer" && solved?(master, guess)
     puts game_message("computer_lost") if solver == "computer" && !solved?(master, guess)
     puts game_message("human_won") if solver == "human" && solved?(master, guess)
     human_lost(master) if solver == "human" && !solved?(master, guess)
@@ -50,6 +50,12 @@ module GameLogic
     replay = gets.chomp
     puts game_message("thanks") if replay.downcase != "y"
     Game.new.play if replay.downcase == "y"
+  end
+
+  def computer_won (turn)
+    puts computer_won_message("inconceivable") if turn <= 6
+    puts computer_won_message("won") if turn > 6 && turn < 12
+    puts computer_won_message("close") if turn == 12
   end
 
   def human_lost (master)

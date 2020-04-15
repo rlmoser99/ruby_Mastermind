@@ -10,7 +10,6 @@ Game.new.play
 
 
 # TO DO:
-# Make different "computer_won" messages depending on the number of guesses
 # Create "turn_order" method and put all methods in one place for computer_solver. 
 # Could it work for human_solver too. ??
 # Computer Solver - when code has duplicate numbers, there will be duplicate permutations. Remove them.
@@ -29,3 +28,4 @@ Game.new.play
 # keep game_end in the game class
 # 2 separate display modules - turn related vs. game logic display?
 # remove game logic module from game?
+# Make different "computer_won" messages depending on the number of guesses

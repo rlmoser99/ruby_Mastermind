@@ -73,7 +73,7 @@ class ComputerSolver
       reduce_permutations (@code_permutations[0])
       @turn_count += 1
     end
-    game_over(@maker_code, @code_permutations[0], "computer")
+    game_over(@maker_code, @code_permutations[0], "computer", @turn_count)
   end
 
   def create_permutations (array)

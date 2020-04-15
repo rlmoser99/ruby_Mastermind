@@ -11,10 +11,17 @@ module TextContent
     {
       "human_won" => "  You broke the code! Congratulations, you win! \n\n",
       "display_code" => "Here is the 'master code' that you were trying to break:",
-      "computer_won" => "\nYou couldn't out-smart the computer, it broke the code.",
       "computer_lost" => "\nYou out-smarted the computer & won the game!",
       "repeat_prompt" => "\n\nDo you want to play again? Press 'y' for yes (or any other key for no).",
       "thanks" => "Thank you for playing Mastermind!"
+    }[message]
+  end
+
+  def computer_won_message (message)
+    {
+      "inconceivable" => "\nInconceivable! Either your code only had 1-2 different numbers or the computer's randomized numbers just happened to be in a perfect order.",
+      "won" => "\nGame over. The computer broke your code.",
+      "close" => "\nThat was close, but the computer finally broke your code."
     }[message]
   end
 
