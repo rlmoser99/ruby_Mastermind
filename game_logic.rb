@@ -47,9 +47,9 @@ module GameLogic
     puts game_message("human_won") if solver == "human" && solved?(master, guess)
     human_lost(master) if solver == "human" && !solved?(master, guess)
     puts game_message("repeat_prompt")
-    @replay = gets.chomp
-    puts game_message("thanks") if @replay.downcase != "y"
-    Game.new.play if @replay.downcase == "y"
+    replay = gets.chomp
+    puts game_message("thanks") if replay.downcase != "y"
+    Game.new.play if replay.downcase == "y"
   end
 
   def human_lost (master)

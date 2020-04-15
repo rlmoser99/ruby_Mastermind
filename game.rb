@@ -19,13 +19,13 @@ class Game
   end
 
   def code_maker
-    @computer = ComputerSolver.new("cpu")
-    @computer.computer_turns
+    maker = ComputerSolver.new("maker")
+    maker.computer_turns
   end
   
   def code_breaker
-    @breaker = HumanSolver.new("person")
-    @breaker.player_turns
+    breaker = HumanSolver.new("breaker")
+    breaker.player_turns
   end  
 
 end

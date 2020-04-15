@@ -10,12 +10,15 @@ Game.new.play
 
 
 # TO DO:
-# remove @ from instance variables only used within method
 # Make different "computer_won" messages depending on the number of guesses
 # Create "turn_order" method and put all methods in one place for computer_solver. 
 # Could it work for human_solver too. ??
 # Computer Solver - when code has duplicate numbers, there will be duplicate permutations. Remove them.
 
+# REVIEW:
+# remove @ from instance variables only used within method
+# @answer in game.play?, @maker_input in computer_solver.computer_turns
+# check out attr:reader
 
 # DONE:
 # Move code into human solver ???
