@@ -10,7 +10,7 @@ Game.new.play
 
 
 # TO DO:
-# Computer Solver - when code has duplicate numbers, there will be duplicate permutations. Remove them.
+
 
 # REVIEW:
 # remove @ from instance variables only used within method
@@ -28,3 +28,4 @@ Game.new.play
 # remove game logic module from game?
 # Make different "computer_won" messages depending on the number of guesses
 # Create "turn_order" method and put all methods in one place for computer_solver. 
+# Computer Solver - when code has duplicate numbers, there will be duplicate permutations. Remove them.
