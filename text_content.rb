@@ -7,25 +7,24 @@ module TextContent
     }[description]  
   end
 
-  def content (number = nil, item)
-    @prompts = {
-      "breaker_start" => "The computer has set the 'master code' and now it's time for you to break the code.\n\n",
-      "maker_start" => "Please enter a 4-digit 'master code' for the computer to break.",
-      "maker_code" => "is your 'master code'.\n",
+  def game_message (message)
+    {
       "human_won" => "  You broke the code! Congratulations, you win! \n\n",
-      "reveal_code" => "Here is the 'master code' that you were trying to break:",
+      "display_code" => "Here is the 'master code' that you were trying to break:",
       "computer_won" => "\nYou couldn't out-smart the computer, it broke the code.",
       "computer_lost" => "\nYou out-smarted the computer & won the game!",
-      "play_again" => "\n\nDo you want to play again? Press 'y' for yes (or any other key for no).",
+      "repeat_prompt" => "\n\nDo you want to play again? Press 'y' for yes (or any other key for no).",
       "thanks" => "Thank you for playing Mastermind!"
-    }
-    @prompts[item]
+    }[message]
   end
 
-  def turn_prompt (number, message)
+  def turn_message (number = nil, message)
     {
-      "human" => "Turn ##{number}: Type in four numbers (1-6) to guess code, or 'q' to quit game.",
+      "guess_prompt" => "Turn ##{number}: Type in four numbers (1-6) to guess code, or 'q' to quit game.",
       "computer" => "\nComputer Turn ##{number}:",
+      "breaker_start" => "The computer has set the 'master code' and now it's time for you to break the code.\n\n",
+      "code_prompt" => "Please enter a 4-digit 'master code' for the computer to break.",
+      "code_displayed" => "is your 'master code'.\n",
     }[message]
   end
   

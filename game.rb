@@ -1,13 +1,14 @@
+require './text_instructions'
 require './text_content'
 require './display'
 
 class Game
+  include TextInstructions
   include TextContent
   include Display
 
   def play
-    # puts instructions
-    puts "'1' to MAKE and '2' to BREAK - removed instructions temporarily"
+    puts instructions
     loop do
       @answer = gets.chomp
       break if @answer == "1" || @answer == "2"

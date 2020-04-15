@@ -42,19 +42,19 @@ module GameLogic
   end
 
   def game_over (master, guess, solver)
-    puts content("computer_won") if solver == "computer" && solved?(master, guess)
-    puts content("computer_lost") if solver == "computer" && !solved?(master, guess)
-    puts content("human_won") if solver == "human" && solved?(master, guess)
+    puts game_message("computer_won") if solver == "computer" && solved?(master, guess)
+    puts game_message("computer_lost") if solver == "computer" && !solved?(master, guess)
+    puts game_message("human_won") if solver == "human" && solved?(master, guess)
     human_lost(master) if solver == "human" && !solved?(master, guess)
-    puts content("play_again")
+    puts game_message("repeat_prompt")
     @replay = gets.chomp
-    puts content("thanks") if @replay.downcase != "y"
+    puts game_message("thanks") if @replay.downcase != "y"
     Game.new.play if @replay.downcase == "y"
   end
 
   def human_lost (master)
     puts warning_message("game_over")
-    puts content("reveal_code") 
+    puts game_message("display_code") 
     show_code(master)
   end
 

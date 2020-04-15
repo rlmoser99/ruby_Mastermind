@@ -15,10 +15,10 @@ class HumanSolver
   end
 
   def player_turns
-    puts content("breaker_start")
+    puts turn_message("breaker_start")
     turn = 1
     while turn <= 12 do
-      puts turn_prompt(turn, "human")
+      puts turn_message(turn, "guess_prompt")
       puts warning_message("last_turn") if turn == 12
       turn += 1
       loop do

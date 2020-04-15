@@ -12,7 +12,7 @@ class ComputerSolver
   end
 
   def computer_turns
-    puts content("maker_start")
+    puts turn_message("code_prompt")
     loop do
       @maker_input = gets.chomp
       break if @maker_input.match(/[1-6][1-6][1-6][1-6]/) && @maker_input.length == 4
@@ -20,7 +20,7 @@ class ComputerSolver
     end
     @maker_code = @maker_input.split(//)
     show_code(@maker_code)
-    puts content("maker_code")
+    puts turn_message("code_displayed")
     find_code_numbers
   end
 
@@ -31,7 +31,7 @@ class ComputerSolver
     @turn_count = 1
     computer_guess = []
     until @total_number == 4 do
-      puts turn_prompt(@turn_count, "computer")
+      puts turn_message(@turn_count, "computer")
       sleep(1)
       computer_guess.pop(4 - @total_number) if @turn_count != 1
       computer_guess << options[option_index] until computer_guess.length == 4
@@ -48,7 +48,7 @@ class ComputerSolver
   def shuffle_guess (array)
     until @exact_number > 0
       array.shuffle!
-      puts turn_prompt(@turn_count, "computer")
+      puts turn_message(@turn_count, "computer")
       sleep(1)
       show_code(array)
       compare(@maker_code, array)
@@ -62,7 +62,7 @@ class ComputerSolver
     create_permutations (array)
     reduce_permutations (array)
     until @turn_count > 12 || solved?(@maker_code, array)
-      puts turn_prompt(@turn_count, "computer")
+      puts turn_message(@turn_count, "computer")
       sleep(1)
       # Remove the last computer guess
       @code_permutations.shift
@@ -87,5 +87,3 @@ class ComputerSolver
   end
 
 end
-
-# Create "turn_order" method and put all methods in one place. Make it work for human_solver too.
