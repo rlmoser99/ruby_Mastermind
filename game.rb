@@ -11,7 +11,7 @@ class Game
     loop do
       @answer = gets.chomp
       break if @answer == "1" || @answer == "2"
-      puts content("answer_error")
+      puts warning_message("answer_error")
     end
     code_maker if @answer == "1"
     code_breaker if @answer == "2"
@@ -25,8 +25,6 @@ class Game
   def code_breaker
     @breaker = HumanSolver.new("person")
     @breaker.player_turns
-    # Where does game_over belong?
-    # game_over
   end  
 
 end

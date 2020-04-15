@@ -53,7 +53,7 @@ module GameLogic
   end
 
   def human_lost (master)
-    puts content("human_lost") 
+    puts warning_message("game_over")
     puts content("reveal_code") 
     show_code(master)
   end

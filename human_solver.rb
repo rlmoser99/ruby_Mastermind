@@ -18,14 +18,14 @@ class HumanSolver
     puts content("breaker_start")
     turn = 1
     while turn <= 12 do
-      puts content(turn, "turn_prompt")
-      puts content("last_turn") if turn == 12
+      puts turn_prompt(turn, "human")
+      puts warning_message("last_turn") if turn == 12
       turn += 1
       loop do
         @guess = gets.chomp
         break if @guess.match(/[1-6][1-6][1-6][1-6]/) && @guess.length == 4
         break if @guess.downcase == "q"
-        puts content("turn_error")
+        puts warning_message("turn_error")
       end
       break if @guess.downcase == "q"
       show_code(@guess.split(//))
