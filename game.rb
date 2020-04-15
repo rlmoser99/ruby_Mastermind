@@ -1,8 +1,8 @@
-require './game_logic'
+require './text_content'
 require './display'
 
 class Game
-  include GameLogic
+  include TextContent
   include Display
 
   def play
@@ -27,8 +27,6 @@ class Game
     @breaker.player_turns
     # Where does game_over belong?
     # game_over
-  end
-
-  
+  end  
 
 end

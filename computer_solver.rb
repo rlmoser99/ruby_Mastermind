@@ -1,9 +1,11 @@
 require './game_logic'
 require './display'
+require './text_content'
 
 class ComputerSolver
   include GameLogic
   include Display
+  include TextContent
 
   def initialize(name)
     @name = name
@@ -17,7 +19,7 @@ class ComputerSolver
       puts content("maker_error")
     end
     @maker_code = @maker_input.split(//)
-    reveal(@maker_code)
+    show_code(@maker_code)
     puts content("maker_code")
     find_code_numbers
   end
@@ -33,7 +35,7 @@ class ComputerSolver
       sleep(1)
       computer_guess.pop(4 - @total_number) if @turn_count != 1
       computer_guess << options[option_index] until computer_guess.length == 4
-      reveal(computer_guess)
+      show_code(computer_guess)
       compare(@maker_code, computer_guess)
       show_clues @exact_number, @same_number
       @turn_count += 1
@@ -48,7 +50,7 @@ class ComputerSolver
       array.shuffle!
       puts content(@turn_count, "computer_turn")
       sleep(1)
-      reveal(array)
+      show_code(array)
       compare(@maker_code, array)
       show_clues @exact_number, @same_number
       @turn_count += 1
@@ -64,7 +66,7 @@ class ComputerSolver
       sleep(1)
       # Remove the last computer guess
       @code_permutations.shift
-      reveal(@code_permutations[0])
+      show_code(@code_permutations[0])
       compare(@maker_code, @code_permutations[0])
       show_clues @exact_number, @same_number
       break if solved?(@maker_code, @code_permutations[0])

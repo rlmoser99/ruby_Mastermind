@@ -1,9 +1,11 @@
 require './game_logic'
 require './display'
+require './text_content'
 
 class HumanSolver
   include GameLogic
   include Display
+  include TextContent
 
   def initialize(name)
     @name = name
@@ -13,7 +15,6 @@ class HumanSolver
   end
 
   def player_turns
-    puts "player_turns inside HumanSolver"
     puts content("breaker_start")
     turn = 1
     while turn <= 12 do
@@ -27,7 +28,7 @@ class HumanSolver
         puts content("turn_error")
       end
       break if @guess.downcase == "q"
-      reveal(@guess.split(//))
+      show_code(@guess.split(//))
       break if solved?(@computer_code, @guess.split(//))
       compare(@computer_code, @guess.split(//))
       show_clues @exact_number, @same_number

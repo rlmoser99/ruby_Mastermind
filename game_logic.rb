@@ -55,14 +55,7 @@ module GameLogic
   def human_lost (master)
     puts content("human_lost") 
     puts content("reveal_code") 
-    reveal(master)
+    show_code(master)
   end
 
-  # This should be moved to display?!?!?
-  def reveal (array)
-    array.each do | num |
-      print color_code (num)
-    end
-  end
-  
 end
