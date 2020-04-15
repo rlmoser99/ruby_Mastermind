@@ -20,7 +20,7 @@ class Game
 
   def code_maker
     maker = ComputerSolver.new("maker")
-    maker.computer_turns
+    maker.computer_start
   end
   
   def code_breaker

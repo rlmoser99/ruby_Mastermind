@@ -11,7 +11,7 @@ class ComputerSolver
     @name = name
   end
 
-  def computer_turns
+  def computer_start
     puts turn_message("code_prompt")
     loop do
       @maker_input = gets.chomp
@@ -31,13 +31,9 @@ class ComputerSolver
     @turn_count = 1
     computer_guess = []
     until @total_number == 4 do
-      puts turn_message(@turn_count, "computer")
-      sleep(1)
       computer_guess.pop(4 - @total_number) if @turn_count != 1
       computer_guess << options[option_index] until computer_guess.length == 4
-      show_code(computer_guess)
-      compare(@maker_code, computer_guess)
-      show_clues @exact_number, @same_number
+      computer_turn @maker_code, computer_guess
       @turn_count += 1
       option_index += 1
     end
@@ -45,14 +41,18 @@ class ComputerSolver
     shuffle_guess(computer_guess) if @exact_number == 0
   end
 
+  def computer_turn (master, guess)
+    puts turn_message(@turn_count, "computer")
+    sleep(1)
+    show_code(guess)
+    compare master, guess
+    show_clues @exact_number, @same_number
+  end
+
   def shuffle_guess (array)
     until @exact_number > 0
       array.shuffle!
-      puts turn_message(@turn_count, "computer")
-      sleep(1)
-      show_code(array)
-      compare(@maker_code, array)
-      show_clues @exact_number, @same_number
+      computer_turn @maker_code, array
       @turn_count += 1
     end
     find_code_order (array)
@@ -62,13 +62,8 @@ class ComputerSolver
     create_permutations (array)
     reduce_permutations (array)
     until @turn_count > 12 || solved?(@maker_code, array)
-      puts turn_message(@turn_count, "computer")
-      sleep(1)
-      # Remove the last computer guess
       @code_permutations.shift
-      show_code(@code_permutations[0])
-      compare(@maker_code, @code_permutations[0])
-      show_clues @exact_number, @same_number
+      computer_turn @maker_code, @code_permutations[0]
       break if solved?(@maker_code, @code_permutations[0])
       reduce_permutations (@code_permutations[0])
       @turn_count += 1
