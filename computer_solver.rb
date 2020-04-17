@@ -25,7 +25,7 @@ class ComputerSolver
   end
 
   def find_code_numbers
-    options = ["1", "2", "3", "4", "5", "6"]
+    options = %w[1 2 3 4 5 6]
     options.shuffle!
     option_index = 0
     @turn_count = 1
