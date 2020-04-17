@@ -63,10 +63,6 @@ class ComputerSolver
     reduce_permutations (array)
     until @turn_count > 12 || solved?(@maker_code, array)
       @code_permutations.shift
-      @code_permutations.each do |code| 
-        print code
-        puts ""
-      end
       computer_turn @maker_code, @code_permutations[0]
       break if solved?(@maker_code, @code_permutations[0])
       reduce_permutations (@code_permutations[0])
