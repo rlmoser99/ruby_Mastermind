@@ -10,12 +10,12 @@ class Game
   def play
     puts instructions
     loop do
-      @answer = gets.chomp
-      break if @answer == "1" || @answer == "2"
+      @game_mode = gets.chomp
+      break if @game_mode == "1" || @game_mode == "2"
       puts warning_message("answer_error")
     end
-    code_maker if @answer == "1"
-    code_breaker if @answer == "2"
+    code_maker if @game_mode == "1"
+    code_breaker if @game_mode == "2"
   end
 
   def code_maker
