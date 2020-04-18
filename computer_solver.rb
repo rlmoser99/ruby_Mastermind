@@ -76,7 +76,7 @@ class ComputerSolver
   end
 
   def reduce_permutations (array)
-    @code_permutations.filter! do | item |
+    @code_permutations.select! do | item |
       compare(@maker_code, item) >= compare(@maker_code, array)
     end
     @code_permutations.uniq!
