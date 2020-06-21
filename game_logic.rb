@@ -1,65 +1,50 @@
-module GameLogic
+# frozen_string_literal: true
 
-  def compare (master, guess)
+# game logic for human_solver and computer_solver
+module GameLogic
+  # Update! exact_number is needed for reduce_permutations method
+  def compare(master, guess)
     temp_master = master.clone
     temp_guess = guess.clone
     @exact_number = exact_matches(temp_master, temp_guess)
     @same_number = right_numbers(temp_master, temp_guess)
-    @total_number = @exact_number + @same_number
+    @total_number = exact_number + same_number
     @exact_number
   end
 
   def exact_matches(master, guess)
     exact = 0
-    master.each_with_index do | item, index |
-      if item == guess[index]
-        exact += 1 
-        master[index] = "*"
-        guess[index]  = "*"
-      end
+    master.each_with_index do |item, index|
+      next unless item == guess[index]
+
+      exact += 1
+      master[index] = '*'
+      guess[index]  = '*'
     end
     exact
   end
 
   def right_numbers(master, guess)
     same = 0
-    guess.each_with_index do | item, index |
-      if guess[index] != "*" && master.include?(guess[index])
-        same += 1
-        remove = master.find_index(guess[index])
-        master[remove] = "?"
-        guess[index]  = "?"
-      end
+    guess.each_index do |index|
+      next unless guess[index] != '*' && master.include?(guess[index])
+
+      same += 1
+      remove = master.find_index(guess[index])
+      master[remove] = '?'
+      guess[index] = '?'
     end
     same
   end
 
-  def solved? (master, guess)
-    correct_guess = false
-    correct_guess = true if master == guess
+  def solved?(master, guess)
+    master == guess
   end
 
-  def game_over (master, guess, solver, turn = nil)
-    computer_won(turn) if solver == "computer" && solved?(master, guess)
-    puts game_message("computer_lost") if solver == "computer" && !solved?(master, guess)
-    puts game_message("human_won") if solver == "human" && solved?(master, guess)
-    human_lost(master) if solver == "human" && !solved?(master, guess)
-    puts game_message("repeat_prompt")
+  def repeat_game
+    puts game_message('repeat_prompt')
     replay = gets.chomp
-    puts game_message("thanks") if replay.downcase != "y"
-    Game.new.play if replay.downcase == "y"
+    puts game_message('thanks') if replay.downcase != 'y'
+    Game.new.play if replay.downcase == 'y'
   end
-
-  def computer_won (turn)
-    puts computer_won_message("inconceivable") if turn <= 6
-    puts computer_won_message("won") if turn > 6 && turn < 12
-    puts computer_won_message("close") if turn == 12
-  end
-
-  def human_lost (master)
-    puts warning_message("game_over")
-    puts game_message("display_code") 
-    show_code(master)
-  end
-
 end
