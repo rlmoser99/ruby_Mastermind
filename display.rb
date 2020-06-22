@@ -15,8 +15,8 @@ module Display
 
   def clue_colors(clue)
     {
-      '*' => "\e[32;1m\e[47m * \e[0m ",
-      '?' => "\e[31m\e[47m ? \e[0m "
+      '*' => "\e[31m\u272A\e[0m ",
+      '?' => "\e[38m\u2022\e[0m "
     }[clue]
   end
 

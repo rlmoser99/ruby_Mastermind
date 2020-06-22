@@ -29,9 +29,9 @@ module TextInstructions
       #{formatting('underline', 'Clues:')}
       After each guess, there will be up to four clues to help crack the code.
 
-      #{clue_colors('*')} This clue means you have 1 correct number in the correct location.
+       #{clue_colors('*')}This clue means you have 1 correct number in the correct location.
 
-      #{clue_colors('?')} This clue means you have 1 correct number, but in the wrong location.
+       #{clue_colors('?')}This clue means you have 1 correct number, but in the wrong location.
 
 
       #{formatting('underline', 'Clue Example:')}
