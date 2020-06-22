@@ -83,8 +83,8 @@ class ComputerSolver
     puts 'Previous Guesses'
     @code_tracker.each_with_index { |code, index| puts "#{index}: #{code}" }
     puts ''
-    puts 'Possible Combinations'
-    @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
+    # puts 'Possible Combinations'
+    # @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
     compare_previous_guesses
   end
 
@@ -94,10 +94,9 @@ class ComputerSolver
 
   def compare_previous_guesses
     remove_zero_exact
-    puts 'Permutations after remove_zero_exact'
-    @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
     remove_one_exact if at_least_one_exact?
-    puts 'Permutations after remove_one_exact'
+    remove_one_exact if zero_then_one_exact?
+    puts 'Permutations after compare_previous_guesses'
     @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
   end
 
@@ -131,6 +130,16 @@ class ComputerSolver
 
   def at_least_one_exact?
     @code_tracker.all? { |code| code[1] >= 1 }
+  end
+
+  def zero_then_one_exact?
+    result = []
+    @code_tracker.each { |code| result << code[1] }
+    loop do
+      result.shift if result[0].zero?
+      break if result[0].positive?
+    end
+    result.all? { |number| number >= 1 }
   end
 
   def keep_code_if_matches(first, second)
