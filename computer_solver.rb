@@ -96,6 +96,9 @@ class ComputerSolver
     remove_zero_exact
     puts 'Permutations after remove_zero_exact'
     @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
+    remove_one_exact if at_least_one_exact?
+    puts 'Permutations after remove_one_exact'
+    @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
   end
 
   def remove_zero_exact
@@ -117,6 +120,23 @@ class ComputerSolver
     puts "Removing number: #{number} from index: #{index}"
     @code_permutations.reject! do |code|
       code[index] == number.to_s
+    end
+  end
+
+  def remove_one_exact
+    first_possibility = code_tracker[-1][0][0]
+    second_possibility = code_tracker[-1][0][1]
+    keep_code_if_matches(first_possibility, second_possibility)
+  end
+
+  def at_least_one_exact?
+    @code_tracker.all? { |code| code[1] >= 1 }
+  end
+
+  def keep_code_if_matches(first, second)
+    puts "Keeping numbers: #{first} and #{second} in 0 or 1 position"
+    @code_permutations.select! do |code|
+      code[0] == first.to_s || code[1] == second.to_s
     end
   end
 
