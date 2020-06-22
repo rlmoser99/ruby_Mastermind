@@ -2,14 +2,12 @@
 
 # game logic for human_solver and computer_solver
 module GameLogic
-  # Update! exact_number is needed for reduce_permutations method
   def compare(master, guess)
     temp_master = master.clone
     temp_guess = guess.clone
     @exact_number = exact_matches(temp_master, temp_guess)
     @same_number = right_numbers(temp_master, temp_guess)
     @total_number = exact_number + same_number
-    @exact_number
   end
 
   def exact_matches(master, guess)
