@@ -76,13 +76,25 @@ class ComputerSolver
   #   computer_game_over(@code_permutations[0])
   # end
 
+  # def find_code_order(array)
+  #   @code_permutations = create_permutations(array)
+  #   @code_permutations.uniq!
+  #   # TEMPORARY - WILL DELETE THIS LINE AFTER THE CODE IS WORKING BUT NEED TO SEE IT
+  #   puts 'Previous Guesses'
+  #   @code_tracker.each_with_index { |code, index| puts "#{index}: #{code}" }
+  #   puts ''
+  #   # puts 'Possible Combinations'
+  #   # @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
+  #   compare_previous_guesses
+  # end
+
   def find_code_order(array)
     @code_permutations = create_permutations(array)
     @code_permutations.uniq!
     # TEMPORARY - WILL DELETE THIS LINE AFTER THE CODE IS WORKING BUT NEED TO SEE IT
-    puts 'Previous Guesses'
-    @code_tracker.each_with_index { |code, index| puts "#{index}: #{code}" }
-    puts ''
+    # puts 'Previous Guesses'
+    # @code_tracker.each_with_index { |code, index| puts "#{index}: #{code}" }
+    # puts ''
     # puts 'Possible Combinations'
     # @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
     compare_previous_guesses
@@ -93,59 +105,43 @@ class ComputerSolver
   end
 
   def compare_previous_guesses
-    remove_zero_exact
-    remove_one_exact if at_least_one_exact?
-    remove_one_exact if zero_then_one_exact?
-    puts 'Permutations after compare_previous_guesses'
-    @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
+    @code_tracker.each { |code| compare_permutations(code) }
+    # puts 'Permutations after compare_previous_guesses'
+    # @code_permutations.each_with_index { |code, ind| puts "#{ind}: #{code}" }
+    final_turns
   end
 
-  def remove_zero_exact
-    @code_tracker.each do |code|
-      next unless code[1].zero? && code[2].positive?
+  def compare_permutations(code)
+    # puts "Code is: #{code[0]}"
+    # puts "Exact Matches are: #{code[1]}"
+    # puts "Same Matches are: #{code[2]}"
+    # puts ''
+    run_permutations(code[0], code[1], code[2])
+  end
 
-      puts "remove_zero_exact for: #{code}"
-      examine_previous_guess(code[0])
+  def run_permutations(code, exact, same)
+    @code_permutations.each do |perm|
+      # puts "compare #{perm} to earlier guess"
+      compare(perm, code)
+      # puts "Exact: #{exact_number} and Same: #{same_number}"
+      reduce_perms(perm) unless exact_number == exact && same_number == same
     end
   end
 
-  def examine_previous_guess(code)
-    code.each_with_index do |number, index|
-      reject_permutations(number, index) if computer_guess.include?(number.to_s)
+  def reduce_perms(code)
+    # puts "need to remove #{code}"
+    @code_permutations.reject! do |perm|
+      perm == code
     end
   end
 
-  def reject_permutations(number, index)
-    puts "Removing number: #{number} from index: #{index}"
-    @code_permutations.reject! do |code|
-      code[index] == number.to_s
-    end
-  end
+  def final_turns
+    until @turn_count > 12
+      computer_turn(maker_code, @code_permutations[0])
+      @turn_count += 1
+      break if solved?(maker_code, @code_permutations[0])
 
-  def remove_one_exact
-    first_possibility = code_tracker[-1][0][0]
-    second_possibility = code_tracker[-1][0][1]
-    keep_code_if_matches(first_possibility, second_possibility)
-  end
-
-  def at_least_one_exact?
-    @code_tracker.all? { |code| code[1] >= 1 }
-  end
-
-  def zero_then_one_exact?
-    result = []
-    @code_tracker.each { |code| result << code[1] }
-    loop do
-      result.shift if result[0].zero?
-      break if result[0].positive?
-    end
-    result.all? { |number| number >= 1 }
-  end
-
-  def keep_code_if_matches(first, second)
-    puts "Keeping numbers: #{first} and #{second} in 0 or 1 position"
-    @code_permutations.select! do |code|
-      code[0] == first.to_s || code[1] == second.to_s
+      @code_permutations.shift
     end
   end
 
